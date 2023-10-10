@@ -23,11 +23,18 @@ def sendTextMessage(recipient, text):
 def getCommand(sender_id, text):
   if "#thu" == text[0:4]:
     data = text.replace(" ", "_").split("_")
-    if type(data[1]) is int:
+    if type(int(data[1])) is int:
       message = "You have received {} at {}, your current balance is {}".format(data[1], datetime.now().strftime("%I:%M %p, %d %b %Y"), 200 + int(data[1]))
     else:
       message = "Wrong command, please check."
     response = sendTextMessage(sender_id, message)
-    print(response)
+    return response
+  if "#chi" == text[0:4]:
+    data = text.replace(" ", "_").split("_")
+    if type(int(data[1])) is int:
+      message = "You have spent {} at {}, your current balance is {}".format(data[1], datetime.now().strftime("%I:%M %p, %d %b %Y"), 200 - int(data[1]))
+    else:
+      message = "Wrong command, please check."
+    response = sendTextMessage(sender_id, message)
     return response
   return "Invalid command", 403

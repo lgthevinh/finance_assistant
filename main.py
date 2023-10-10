@@ -4,6 +4,8 @@ from controller import sendTextMessage, getCommand
 app = Flask(__name__)
 app.debug = True
 
+ALLOWED_USER = ['6913965595292111', '']
+
 @app.route("/", methods=['GET'])
 def fbverify():
     if request.args.get("hub.mode") == "subscribe" and request.args.get("hub.challenge"):
@@ -18,16 +20,15 @@ def fbwebhook():
     data = request.get_json()
     print(data)
     sender_id = data['entry'][0]['messaging'][0]['sender']['id']
-    if sender_id == '6913965595292111':
-        message = data['entry'][0]['messaging'][0]['message']
-        if message['text'] == "test":
-            response = sendTextMessage(sender_id, "test")
-            print(response)
-            return response
-        else:
-            response = getCommand(sender_id, message['text'])
-            print(response)
-            return response
+    message = data['entry'][0]['messaging'][0]['message']
+    if message['text'] == "#test":
+        response = sendTextMessage(sender_id, "test_ok")
+        print(response)
+        return response
+    else:
+        response = getCommand(sender_id, message['text'])
+        print(response)
+        return response
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
     
