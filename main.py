@@ -20,15 +20,17 @@ def fbwebhook():
     data = request.get_json()
     print(data)
     sender_id = data['entry'][0]['messaging'][0]['sender']['id']
-    message = data['entry'][0]['messaging'][0]['message']
-    if message['text'] == "#test":
-        response = sendTextMessage(sender_id, "test_ok")
-        print(response)
-        return response
-    else:
-        response = getCommand(sender_id, message['text'])
-        print(response)
-        return response
+    if sender_id == ALLOWED_USER:
+        message = data['entry'][0]['messaging'][0]['message']
+        if message['text'] == "#test":
+            response = sendTextMessage(sender_id, "test_ok")
+            print(response)
+            return response
+        else:
+            response = getCommand(sender_id, message['text'])
+            print(response)
+            return response
+    return data
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
     
