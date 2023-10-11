@@ -22,7 +22,6 @@ def sendTextMessage(recipient, text):
   return response.json()
 
 def getCommand(sender_id, text):
-
   if "#get" == text[:4]:
     data = text.replace(" ", "_").split("_")
     try:
@@ -34,6 +33,7 @@ def getCommand(sender_id, text):
       message = "Wrong command, please check."
     response = sendTextMessage(sender_id, message)
     return response
+
   if "#spend" == text[:6]:
     data = text.replace(" ", "_").split("_")
     try:
@@ -45,6 +45,7 @@ def getCommand(sender_id, text):
       message = "Wrong command, please check."
     response = sendTextMessage(sender_id, message)
     return response
+
   if "#balance" == text[:8]:
     response = sendTextMessage(sender_id, "Your current balance is {}".format(getCurrentBalance(sender_id)))
     return response
