@@ -1,5 +1,5 @@
 from flask import Flask, request
-from controller import sendTextMessage, getCommand
+from api import sendTextMessage, getCommand
 
 app = Flask(__name__)
 app.debug = True
