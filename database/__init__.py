@@ -12,7 +12,7 @@ def connect_db():
   try:
       client.admin.command('ping')
       print("Pinged your deployment. You successfully connected to MongoDB!")
-      my_db = client["fina_database"]
+      my_db = client["fina_bot"]
       print(client.list_database_names())
       return my_db
   except Exception as e:
