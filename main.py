@@ -21,7 +21,7 @@ def fbwebhook():
     sender_id = data['entry'][0]['messaging'][0]['sender']['id']
     message = data['entry'][0]['messaging'][0]['message']
     print(data , sender_id)
-    if message['text'] == "#test":
+    if message['text'] == "TEST":
         response = sendTextMessage(sender_id, "test_ok\n(message has sent to {})".format(sender_id))
         print(response)
         return response
@@ -30,6 +30,7 @@ def fbwebhook():
         print(response)
         return response
     return data
+
 if __name__ == "__main__":
     app.run(debug=True, port=3000)
     

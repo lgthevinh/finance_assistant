@@ -23,7 +23,7 @@ def sendTextMessage(recipient, text):
   return response.json()
 
 def getCommand(sender_id, text):
-  if "#get" == text[:4]:
+  if "GET" == text[:4]:
     data = text.replace(" ", "_").split("_")
     try:
       ammount = int(data[1]) * 1000
@@ -35,7 +35,7 @@ def getCommand(sender_id, text):
     response = sendTextMessage(sender_id, message)
     return response
 
-  if "#spend" == text[:6]:
+  if "SPEND" == text[:6]:
     data = text.replace(" ", "_").split("_")
     try:
       ammount = int(data[1]) * 1000
@@ -47,7 +47,7 @@ def getCommand(sender_id, text):
     response = sendTextMessage(sender_id, message)
     return response
 
-  if "#balance" == text[:8]:
+  if "BALANCE" == text[:8]:
     response = sendTextMessage(sender_id, "Your current balance is {}".format(getCurrentBalance(sender_id)))
     return response
   
