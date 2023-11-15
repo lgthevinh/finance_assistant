@@ -4,7 +4,7 @@ from api import sendTextMessage, getCommand
 app = Flask(__name__)
 app.debug = True
 
-ALLOWED_USER = ['6913965595292111', '']
+ALLOWED_USER = ['6913965595292111']
 
 @app.route("/", methods=['GET'])
 def fbverify():

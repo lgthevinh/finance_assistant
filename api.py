@@ -7,6 +7,7 @@ PAGE_ACCESS_TOKEN = "EAAORjZCyWfKcBOZBIy1G55u20JF0fr3ZBKsExlNF6CAvQ0bwFs6ZCbL821
 #This is API Key for Facebook messenger
 API = "https://graph.facebook.com/v18.0/me/messages"
 
+#Messenger API
 def sendTextMessage(recipient, text):
   payload = {
     "recipient": {
@@ -51,3 +52,4 @@ def getCommand(sender_id, text):
     return response
   
   return "Invalid command"
+
