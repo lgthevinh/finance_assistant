@@ -1,5 +1,5 @@
 from flask import Flask, request
-from api import sendTextMessage, getCommand
+from controllers.api import sendTextMessage, getCommand
 
 app = Flask(__name__)
 app.debug = True
@@ -21,13 +21,12 @@ def fbwebhook():
     sender_id = data['entry'][0]['messaging'][0]['sender']['id']
     message = data['entry'][0]['messaging'][0]['message']
     print(data , sender_id)
-    if message['text'] == "TEST":
-        response = sendTextMessage(sender_id, "test_ok\n(message has sent to {})".format(sender_id))
+    if message['text'] == "CONNECTION":
+        response = sendTextMessage(sender_id, f'Finabot has connected to Meta Webhooks')
         print(response)
         return response
     if sender_id in ALLOWED_USER:
         response = getCommand(sender_id, message['text'])
-        print(response)
         return response
     return data
 
