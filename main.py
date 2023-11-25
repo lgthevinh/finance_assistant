@@ -1,5 +1,8 @@
+import sys
+sys.path.append("./google_api")
+
 from flask import Flask, request
-from controllers.api import sendTextMessage, getCommand
+from controllers.api import sendTextMessage, getAndResponse
 
 app = Flask(__name__)
 app.debug = True
@@ -17,6 +20,7 @@ def fbverify():
 
 @app.route("/", methods=['POST'])
 def fbwebhook():
+    # Extract data from request
     data = request.get_json()
     sender_id = data['entry'][0]['messaging'][0]['sender']['id']
     message = data['entry'][0]['messaging'][0]['message']
@@ -26,7 +30,7 @@ def fbwebhook():
         print(response)
         return response
     if sender_id in ALLOWED_USER:
-        response = getCommand(sender_id, message['text'])
+        response = getAndResponse(sender_id, message['text'])
         return response
     return data
 
