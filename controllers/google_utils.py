@@ -1,10 +1,13 @@
-import google.auth
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from __init__ import create_creds
+from controllers import create_creds
 
+# This is SPREADSHEET ID (get from Google Sheet URL), RANGE_NAME is the sheet name and range data
 SPREEDSHEET_ID = "1OW96c4zdAHSr2zmQuEjS9JIgbF6BJ1BL7QooLMJ8e3w"
 RANGE_NAME = "2024!A2:D1000"
+
+# This is the category of the income and expense
+CATEGORY = ["Shopping", "Education", "Food", "Healthcare", "Transportation"]
 
 creds = create_creds()
 service = build("sheets", "v4", credentials=creds)
@@ -69,13 +72,3 @@ def append_values(spreadsheet_id, range_name, value_input_option, values):
   except HttpError as error:
     print(f"An error occurred: {error}")
     return error
-
-# DEBUG MODE
-# if __name__ == "__main__":
-#   # Pass: spreadsheet_id, range_name value_input_option and _values
-#   append_values(
-#       SPREEDSHEET_ID,
-#       '2024!A2',
-#       "USER_ENTERED",
-#       [["27/11", "Test", "Shopping", 100000]],  
-#   )
