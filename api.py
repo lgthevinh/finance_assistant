@@ -5,7 +5,7 @@ import controllers.messenger.messenger_utils as messenger_utils
 # This is SPREADSHEET ID (get from Google Sheet URL), RANGE_NAME is the sheet name and range data
 SPREEDSHEET_ID = "1OW96c4zdAHSr2zmQuEjS9JIgbF6BJ1BL7QooLMJ8e3w"
 RANGE_NAME = '!A2:E1000'
-BALANCE_RANGE = '!G2:G2'
+BALANCE_RANGE = '!J9'
 
 # This is the category of the income and expense
 CATEGORY = ["Shopping", "Education", "Food", "Healthcare", "Transportation", "Work", "Family"]
@@ -19,8 +19,8 @@ except Exception as e:
 
 def fetch_balance():
   try:
-    current_year = str(datetime.now().strftime("%Y"))+"!"
-    result = get_values(service, current_year+SPREEDSHEET_ID, current_year+BALANCE_RANGE)
+    current_year = str(datetime.now().strftime("%Y"))
+    result = get_values(service, SPREEDSHEET_ID, current_year+BALANCE_RANGE)
     balance = result['values'][0][0] # Get the first value of the first row
     message = f'Your current balance is {balance}'
   except Exception as e:
@@ -29,7 +29,7 @@ def fetch_balance():
 
 def get_income(text: str):
   try:
-    current_year = str(datetime.now().strftime("%Y"))+"!"
+    current_year = str(datetime.now().strftime("%Y"))
     # Data manipulation
     data = text.replace(" ", "_").split("_")
     name = str(data[1])
@@ -41,7 +41,7 @@ def get_income(text: str):
       message = 'Invalid category, please choose one of these category: ' + ', '.join(CATEGORY)
       return message
     else: # If valid, append to Google Sheet
-      append_values(service, current_year+SPREEDSHEET_ID, current_year+RANGE_NAME, "USER_ENTERED", [[datetime.now().strftime("%d/%m"), "IN", name, category, amount]])
+      append_values(service, SPREEDSHEET_ID, current_year+RANGE_NAME, "USER_ENTERED", [[datetime.now().strftime("%d/%m"), "IN", name, category, amount]])
       message = f'You have received {amount} on {name} at {datetime.now().strftime("%I:%M %p, %d %b %Y")}'
   except Exception as e:
     # If error, return error message
@@ -50,7 +50,7 @@ def get_income(text: str):
 
 def spend_income(text: str):
   try:
-    current_year = str(datetime.now().strftime("%Y"))+"!"
+    current_year = str(datetime.now().strftime("%Y"))
     # Data manipulation
     data = text.replace(" ", "_").split("_")
     name = str(data[1])
@@ -60,7 +60,7 @@ def spend_income(text: str):
     if category not in CATEGORY:
       message = 'Invalid category, please choose one of these category: ' + ', '.join(CATEGORY)
     else: # If valid, append to Google Sheet
-      append_values(service, current_year+SPREEDSHEET_ID, current_year+RANGE_NAME, "USER_ENTERED", [[datetime.now().strftime("%d/%m"), "OUT", name, category, amount]])
+      append_values(service, SPREEDSHEET_ID, current_year+RANGE_NAME, "USER_ENTERED", [[datetime.now().strftime("%d/%m"), "OUT", name, category, amount]])
       message = f'You have spent {amount} on {name} at {datetime.now().strftime("%I:%M %p, %d %b %Y")}'
   except Exception as e:
     # If error, return error message
