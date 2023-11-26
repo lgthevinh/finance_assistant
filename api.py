@@ -2,7 +2,7 @@ from datetime import datetime
 from controllers.google.google_utils import get_values, append_values, build_service, create_creds
 import controllers.messenger.messenger_utils as messenger_utils
 
-# This is SPREADSHEET ID (get from Google Sheet URL), RANGE_NAME is the sheet name and range data
+# This is SPREADSHEET ID (get from Google Sheet URL), RANGE_NAME is the sheet name, range data and balance range
 SPREEDSHEET_ID = "1OW96c4zdAHSr2zmQuEjS9JIgbF6BJ1BL7QooLMJ8e3w"
 RANGE_NAME = '!A2:E1000'
 BALANCE_RANGE = '!J9'
