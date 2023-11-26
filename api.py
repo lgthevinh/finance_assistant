@@ -1,10 +1,11 @@
 from datetime import datetime
-from controllers.google.google_utils import append_values, build_service, create_creds
+from controllers.google.google_utils import get_values, append_values, build_service, create_creds
 import controllers.messenger.messenger_utils as messenger_utils
 
 # This is SPREADSHEET ID (get from Google Sheet URL), RANGE_NAME is the sheet name and range data
 SPREEDSHEET_ID = "1OW96c4zdAHSr2zmQuEjS9JIgbF6BJ1BL7QooLMJ8e3w"
 RANGE_NAME = "2024!A2:D1000"
+BALANCE_RANGE = "2024!J9"
 
 # This is the category of the income and expense
 CATEGORY = ["Shopping", "Education", "Food", "Healthcare", "Transportation", "Work", "Family"]
@@ -16,7 +17,16 @@ try:
 except Exception as e:
   print(f'Error occured while building service with error: {e}')
 
-def getIncome(text: str):
+def fetch_balance():
+  try:
+    result = get_values(service, SPREEDSHEET_ID, BALANCE_RANGE)
+    balance = result['values'][0][0] # Get the first value of the first row
+    message = f'Your current balance is {balance}'
+  except Exception as e:
+    message = f'Error occured while fetching balance with error: {e}'
+  return message
+
+def get_income(text: str):
   try:
     # Data manipulation
     data = text.replace(" ", "_").split("_")
@@ -36,7 +46,7 @@ def getIncome(text: str):
     message = f'Error occured while adding income with error: {e}, please try again.'
   return message
 
-def spendIncome(text: str):
+def spend_income(text: str):
   try:
     # Data manipulation
     data = text.replace(" ", "_").split("_")
@@ -54,24 +64,25 @@ def spendIncome(text: str):
     message = f'Error occured while adding expense with error: {e}, please try again.'
   return message
 
-def getAndResponse(sender_id, text):
+def get_and_response(sender_id, text):
   if "CONNECT" == text[:7]:
     message = "Fina bot has connected to your account"
     response = messenger_utils.sendTextMessage(sender_id, message)
   if "GET" == text[:4]:
     try:
-      message = getIncome(text)
+      message = get_income(text)
     except Exception as e:
       message = f'Error occured while adding income with error: {e}, please try again.'
     response = messenger_utils.sendTextMessage(sender_id, message)
     return response
   if "SPEND" == text[:6]:
     try:
-      message = spendIncome(text)
+      message = spend_income(text)
     except Exception as e:
       message = f'Error occured while adding expense with error: {e}, please try again.'
     return response
   if "BALANCE" == text[:8]:
-    response = messenger_utils.sendTextMessage(sender_id, "Your current balance is {}")
+    message = fetch_balance()
+    response = messenger_utils.sendTextMessage(sender_id, message)
     return response
   return "Invalid command"

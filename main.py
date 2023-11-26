@@ -1,34 +1,11 @@
 from flask import Flask, request
-from api import getIncome, spendIncome
+from api import get_and_response
 import controllers.messenger.messenger_utils as messenger_utils
 
 app = Flask(__name__)
 app.debug = True
 
 ALLOWED_USER = ['6913965595292111']
-
-def getAndResponse(sender_id, text):
-  print(text)
-  if "CONNECT" == text[:7]:
-    message = "Fina bot has connected to your account"
-    response = messenger_utils.sendTextMessage(sender_id, message)
-  if "GET" == text[:3]:
-    print(text)
-    try:
-      message = getIncome(text)
-    except Exception as e:
-      message = f'Error occured while adding income with error: {e}, please try again.'
-    response = messenger_utils.sendTextMessage(sender_id, message)
-    return response
-  if "SPEND" == text[:5]:
-    message = spendIncome(text)
-    response = messenger_utils.sendTextMessage(sender_id, message)
-    return response
-  if "BALANCE" == text[:7]:
-    response = messenger_utils.sendTextMessage(sender_id, "Your current balance is {}")
-    return response
-  return "Invalid command"
-
 
 @app.route("/", methods=['GET'])
 def fbverify():
@@ -48,7 +25,7 @@ def fbwebhook():
     sender_id = data['entry'][0]['messaging'][0]['sender']['id']
     message = data['entry'][0]['messaging'][0]['message']
     print(data , sender_id)
-    getAndResponse(sender_id, message['text'])
+    get_and_response(sender_id, message['text'])
     return data
 
 if __name__ == "__main__":
