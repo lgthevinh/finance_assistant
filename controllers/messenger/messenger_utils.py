@@ -1,8 +1,10 @@
+import sys
+sys.path.append('../config')
+
+from config.config_project import PAGE_ACCESS_TOKEN
 import requests
 
-# This is PAGE ACCESS TOKEN (get from Facebook Developer console)
-PAGE_ACCESS_TOKEN = "EAAORjZCyWfKcBO2yuPukZBsEBUPJcwddVGyNyNwW7XTm6ZBhKFZCU7IZChJk9o9AEHZBejBCeEwXkzXJNgkpF8MTSiLYSa7otTFibgIiutIiltjMtQqVXK0exr5DUeWidORU54W5jpjUIumu0UkuEqmWvj90Oifekv7YkTlK70dRIPAZBLivGDe8ieJfV4ZC"
-#This is API Key for Facebook messenger
+# This is API Key for Facebook messenger
 API = "https://graph.facebook.com/v18.0/me/messages"
 
 # Messenger API
