@@ -1,6 +1,17 @@
 from datetime import datetime
+import locale
+
 from controllers.google.google_utils import * # Import all functions from google_utils.py
 import controllers.messenger.messenger_utils as messenger_utils
+
+locale.setlocale(locale.LC_ALL, 'vi_VN') # Set locale to Vietnamese
+
+COMMANDS = [
+  "CONNECT",  # Check Messenger connection
+  "GET",      # Add income
+  "SPEND",    # Add expense
+  "BALANCE"   # Get balance
+  ]
 
 try: 
   creds = create_creds()
@@ -14,7 +25,7 @@ def fetch_balance():
     current_year = str(datetime.now().strftime("%Y"))
     result = get_values(service, SPREEDSHEET_ID, current_year+BALANCE_RANGE)
     balance = result['values'][0][0] # Get the first value of the first row
-    message = f'Your current balance is {balance}'
+    message = f'Your current balance is {balance} on {datetime.now().strftime("%H:%M, %d-%m-%Y")}' # No need to format balance because it's already formatted in Google Sheet
   except Exception as e:
     message = f'Error occured while fetching balance with error: {e}'
   return message
@@ -34,7 +45,7 @@ def get_income(text: str):
       return message
     else: # If valid, append to Google Sheet
       append_values(service, SPREEDSHEET_ID, current_year+RANGE_NAME, "USER_ENTERED", [[datetime.now().strftime("%d/%m"), "IN", name, category, amount]])
-      message = f'You have received {amount} on {name} at {datetime.now().strftime("%I:%M %p, %d %b %Y")}'
+      message = f'You have received {locale.currency('%d', amount, grouping=True)} on {name} at {datetime.now().strftime("%H:%M, %d-%m-%Y")}'
   except Exception as e:
     # If error, return error message
     message = f'Error occured while adding income with error: {e}, please try again.'
@@ -53,31 +64,26 @@ def spend_income(text: str):
       message = 'Invalid category, please choose one of these category: ' + ', '.join(CATEGORY)
     else: # If valid, append to Google Sheet
       append_values(service, SPREEDSHEET_ID, current_year+RANGE_NAME, "USER_ENTERED", [[datetime.now().strftime("%d/%m"), "OUT", name, category, amount]])
-      message = f'You have spent {amount} on {name} at {datetime.now().strftime("%I:%M %p, %d %b %Y")}'
+      message = f'You have spent {locale.currency(amount, grouping=True)} on {name} at {datetime.now().strftime("%H:%M, %d-%m-%Y")}'
   except Exception as e:
     # If error, return error message
     message = f'Error occured while adding expense with error: {e}, please try again.'
   return message
 
 def get_and_response(sender_id, text):
-  if "CONNECT" == text[:7]:
-    message = "Fina bot has connected to your account"
-    response = messenger_utils.sendTextMessage(sender_id, message)
-  if "GET" == text[:4]:
+  command = text.replace(" ", "_").split("_")
+  if command[0] in COMMANDS:
     try:
-      message = get_income(text)
+      if command[0] == "CONNECT":
+        message = "Fina bot has connected to your account"
+      if command[0] == "GET":
+        message = get_income(text)
+      if command[0] == "SPEND":
+        message = spend_income(text)
+      if command[0] == "BALANCE":
+        message = fetch_balance()
     except Exception as e:
-      message = f'Error occured while adding income with error: {e}, please try again.'
-    response = messenger_utils.sendTextMessage(sender_id, message)
-    return response
-  if "SPEND" == text[:6]:
-    try:
-      message = spend_income(text)
-    except Exception as e:
-      message = f'Error occured while adding expense with error: {e}, please try again.'
-    return response
-  if "BALANCE" == text[:8]:
-    message = fetch_balance()
-    response = messenger_utils.sendTextMessage(sender_id, message)
-    return response
-  return "Invalid command"
+      message = f'Error occured while processing command with error: {e}, please try again.'
+  else:
+    message = "Invalid command, please try again."
+  return messenger_utils.sendTextMessage(sender_id, message)
