@@ -1,14 +1,6 @@
 from datetime import datetime
-from controllers.google.google_utils import get_values, append_values, build_service, create_creds
+from controllers.google.google_utils import * # Import all functions from google_utils.py
 import controllers.messenger.messenger_utils as messenger_utils
-
-# This is SPREADSHEET ID (get from Google Sheet URL), RANGE_NAME is the sheet name, range data and balance range
-SPREEDSHEET_ID = "1OW96c4zdAHSr2zmQuEjS9JIgbF6BJ1BL7QooLMJ8e3w"
-RANGE_NAME = '!A2:E1000'
-BALANCE_RANGE = '!J9'
-
-# This is the category of the income and expense
-CATEGORY = ["Shopping", "Education", "Food", "Healthcare", "Transportation", "Work", "Family"]
 
 try: 
   creds = create_creds()
