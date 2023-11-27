@@ -5,15 +5,6 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-# This is SPREADSHEET ID (get from Google Sheet URL), RANGE_NAME is the sheet name and range data
-SPREEDSHEET_ID = "1OW96c4zdAHSr2zmQuEjS9JIgbF6BJ1BL7QooLMJ8e3w"
-RANGE_NAME = "2024!A2:D1000"
-
-# This is the category of the income and expense
-CATEGORY = ["Shopping", "Education", "Food", "Healthcare", "Transportation"]
-
-# Google API
-
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 

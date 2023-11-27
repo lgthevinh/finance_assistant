@@ -1,6 +1,5 @@
 from flask import Flask, request
 from api import get_and_response
-import controllers.messenger.messenger_utils as messenger_utils
 
 app = Flask(__name__)
 app.debug = True
