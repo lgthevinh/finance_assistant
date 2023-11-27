@@ -113,7 +113,7 @@ The get_and_response function processes the command from the user and sends a re
 
 ## Authors
 
-* **Luong The Vinh** - *University of Engineering and Technology - VNU* - [lgthevinh](https://github.com/lgthevinh)
+* **Luong The Vinh** - *University of Engineering and Technology (UET-VNU)* - [lgthevinh](https://github.com/lgthevinh)
 
 ## License
 
