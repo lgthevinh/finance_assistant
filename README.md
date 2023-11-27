@@ -6,7 +6,6 @@ Fina Bot is a financial assistance bot designed to help manage your finances.
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-
 ## Built With
 
 * [Python](https://www.python.org/) - The programming language used.
