@@ -7,7 +7,7 @@ from googleapiclient.errors import HttpError
 
 # This is SPREADSHEET ID (get from Google Sheet URL), RANGE_NAME is the sheet name, range data and balance range
 SPREEDSHEET_ID = "1OW96c4zdAHSr2zmQuEjS9JIgbF6BJ1BL7QooLMJ8e3w"
-RANGE_NAME = '!A14:E1000'
+RANGE_NAME = '!A14:E1016'
 BALANCE_RANGE = '!D10'
 
 # This is the category of the income and expense
